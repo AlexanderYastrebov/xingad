@@ -35,9 +35,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
  */
 public class SoftwareEngineerAd implements Advertisment {
 
-    protected static final int MINIMUM_BONUS_SKILLS = 2;
+    private static final int MINIMUM_BONUS_SKILLS = 2;
 
-    private Engineer engineer;
+    private final Engineer engineer;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -55,19 +55,12 @@ public class SoftwareEngineerAd implements Advertisment {
     @Override
     public boolean fitsJobDescription() {
 
-        if (!engineer.isSpeaking(Locale.ENGLISH, SkillLevel.BUSINESS)) {
-            return false;
-        }
+        boolean matchesBasic = engineer.isSpeaking(Locale.ENGLISH, SkillLevel.BUSINESS)
+                && engineer.hasJavaSkills(SkillLevel.EXPERT)
+                && engineer.preferesAll(Preferences.WEB_DEVELOPMENT, Preferences.WORK_IN_TEAM)
+                && engineer.writesTestCases();
 
-        if (!engineer.hasJavaSkills(SkillLevel.EXPERT)) {
-            return false;
-        }
-
-        if (!engineer.preferesAll(Preferences.WEB_DEVELOPMENT, Preferences.WORK_IN_TEAM)) {
-            return false;
-        }
-
-        if (!engineer.writesTestCases()) {
+        if (!matchesBasic) {
             return false;
         }
 
@@ -121,30 +114,21 @@ public class SoftwareEngineerAd implements Advertisment {
 
         try {
             messageHelper.setTo("jobs@xing-events.com");
-
             messageHelper.setFrom(engineer.getEmailAddress());
-
             messageHelper.setSubject("Application as " + getClass().getName());
-        } catch (MessagingException ex) {
-            throw new HRRuntimeException(ex);
-        }
-        StringBuffer emailTextBuffer = new StringBuffer(1024);
 
-        emailTextBuffer.append(engineer.getGreetingText()).append(engineer.getCoverLetterText()).append(engineer.getSalarayExpectationText());
+            StringBuilder text = new StringBuilder(1024);
 
-        if (engineer.isOpenSourceContributor()) {
+            text.append(engineer.getGreetingText());
+            text.append(engineer.getCoverLetterText());
+            text.append(engineer.getSalarayExpectationText());
 
-            emailTextBuffer.append(engineer.getOpenSourceContributionLinks());
+            if (engineer.isOpenSourceContributor()) {
+                text.append(engineer.getOpenSourceContributionLinks());
+            }
 
-        }
+            messageHelper.setText(text.toString());
 
-        try {
-            messageHelper.setText(emailTextBuffer.toString());
-        } catch (MessagingException ex) {
-            throw new HRRuntimeException(ex);
-        }
-
-        try {
             messageHelper.addAttachment("CV.pdf", engineer.getCVAsDataSource());
 
             Optional<DataSource> workReferences = engineer.getWorkReferences();

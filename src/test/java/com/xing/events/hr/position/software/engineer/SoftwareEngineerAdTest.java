@@ -35,13 +35,13 @@ public class SoftwareEngineerAdTest {
         alex.setPreferences(new HashSet<>(Arrays.asList(Preferences.WEB_DEVELOPMENT, Preferences.WORK_IN_TEAM)));
         alex.setJavaLevel(SkillLevel.EXPERT);
         alex.setWritesTestCases(true);
-        alex.setOpenSourceContributor(true);
+        alex.setOpenSourceContributionLinks(Arrays.asList("https://github.com/neo4j/neo4j/pull/330"));
 
         SoftwareEngineerAd ad = new SoftwareEngineerAd(alex);
 
         assertTrue(ad.fitsJobDescription());
     }
-    
+
     @Test
     public void testSomeoneElseGood() {
         Engineer someone = new Engineer();
@@ -62,7 +62,6 @@ public class SoftwareEngineerAdTest {
         someone.setPreferences(new HashSet<>(Arrays.asList(Preferences.WEB_DEVELOPMENT)));
         someone.setJavaLevel(SkillLevel.GOOD);
         someone.setWritesTestCases(true);
-        someone.setOpenSourceContributor(true);
 
         SoftwareEngineerAd ad = new SoftwareEngineerAd(someone);
 

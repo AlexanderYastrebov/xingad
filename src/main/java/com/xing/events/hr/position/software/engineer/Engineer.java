@@ -2,6 +2,7 @@ package com.xing.events.hr.position.software.engineer;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -22,12 +23,13 @@ public class Engineer {
     private SkillLevel javaLevel = SkillLevel.NO_SKILL;
     //
     private boolean writesTestCases = false;
-    private boolean openSourceContributor = false;
+    private List<String> openSourceContributionLinks = Collections.emptyList();
     //
     private InternetAddress emailAddress;
     private String greetingText;
     private String coverLetterText;
     private String salarayExpectationText;
+
     private DataSource cv;
     private Optional<DataSource> workReferences;
 
@@ -55,8 +57,9 @@ public class Engineer {
         this.writesTestCases = writesTestCases;
     }
 
-    public void setOpenSourceContributor(boolean openSourceContributor) {
-        this.openSourceContributor = openSourceContributor;
+    public void setOpenSourceContributionLinks(List<String> links) {
+        Assert.notNull(links);
+        this.openSourceContributionLinks = links;
     }
 
     public void setEmailAddress(InternetAddress emailAddress) {
@@ -119,7 +122,7 @@ public class Engineer {
     }
 
     public boolean isOpenSourceContributor() {
-        return openSourceContributor;
+        return !openSourceContributionLinks.isEmpty();
     }
 
     public InternetAddress getEmailAddress() {
@@ -138,7 +141,7 @@ public class Engineer {
         return salarayExpectationText;
     }
 
-    public Object getOpenSourceContributionLinks() {
+    public List<String> getOpenSourceContributionLinks() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -158,7 +161,7 @@ public class Engineer {
                 + ", preferences=" + preferences
                 + ", javaLevel=" + javaLevel
                 + ", writesTestCases=" + writesTestCases
-                + ", openSourceContributor=" + openSourceContributor
+                + ", openSourceContributionLinks=" + openSourceContributionLinks
                 + ", emailAddress=" + emailAddress
                 + ", greetingText=" + greetingText
                 + ", coverLetterText=" + coverLetterText
