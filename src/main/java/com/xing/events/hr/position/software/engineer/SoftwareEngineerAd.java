@@ -2,6 +2,7 @@ package com.xing.events.hr.position.software.engineer;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -44,6 +45,10 @@ public class SoftwareEngineerAd implements Advertisment {
 
     public SoftwareEngineerAd(Engineer engineer) {
         this.engineer = engineer;
+    }
+
+    public void setMailSender(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
     }
 
     /**
@@ -110,21 +115,24 @@ public class SoftwareEngineerAd implements Advertisment {
 
         MimeMessage email = mailSender.createMimeMessage();
 
-        MimeMessageHelper messageHelper = new MimeMessageHelper(email, "UTF-8");
-
         try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(email, true, "UTF-8");
+
             messageHelper.setTo("jobs@xing-events.com");
             messageHelper.setFrom(engineer.getEmailAddress());
-            messageHelper.setSubject("Application as " + getClass().getName());
+            messageHelper.setSubject("Application as " + getClass().getSimpleName());
 
             StringBuilder text = new StringBuilder(1024);
 
-            text.append(engineer.getGreetingText());
-            text.append(engineer.getCoverLetterText());
-            text.append(engineer.getSalarayExpectationText());
+            text.append(engineer.getGreetingText()).append("\n");
+            text.append(engineer.getCoverLetterText()).append("\n");
+            text.append(engineer.getSalarayExpectationText()).append("\n");
 
             if (engineer.isOpenSourceContributor()) {
-                text.append(engineer.getOpenSourceContributionLinks());
+                text.append(
+                        engineer.getOpenSourceContributionLinks().stream()
+                        .collect(Collectors.joining("\n"))
+                );
             }
 
             messageHelper.setText(text.toString());

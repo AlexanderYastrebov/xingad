@@ -31,7 +31,7 @@ public class Engineer {
     private String salarayExpectationText;
 
     private DataSource cv;
-    private Optional<DataSource> workReferences;
+    private Optional<DataSource> workReferences = Optional.empty();
 
     public void setSpokenLanguages(Map<Locale, SkillLevel> spokenLanguages) {
         Assert.notNull(spokenLanguages);
@@ -142,7 +142,7 @@ public class Engineer {
     }
 
     public List<String> getOpenSourceContributionLinks() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return openSourceContributionLinks;
     }
 
     public DataSource getCVAsDataSource() {
