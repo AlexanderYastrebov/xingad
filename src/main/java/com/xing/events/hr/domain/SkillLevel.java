@@ -1,4 +1,4 @@
-package com.xing.events.hr.position.software.engineer;
+package com.xing.events.hr.domain;
 
 /**
  *

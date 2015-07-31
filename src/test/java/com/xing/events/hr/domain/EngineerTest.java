@@ -1,10 +1,18 @@
-package com.xing.events.hr.position.software.engineer;
+package com.xing.events.hr.domain;
 
+import com.xing.events.hr.domain.Preferences;
+import com.xing.events.hr.domain.Framework;
+import com.xing.events.hr.domain.SkillLevel;
+import com.xing.events.hr.domain.Engineer;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.util.ByteArrayDataSource;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
