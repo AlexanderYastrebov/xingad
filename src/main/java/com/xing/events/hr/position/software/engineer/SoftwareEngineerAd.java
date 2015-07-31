@@ -1,21 +1,18 @@
 package com.xing.events.hr.position.software.engineer;
 
 import java.util.Locale;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 /**
- *
- *
  *
  * Class that provides the decision process if any given {@link Engineer} should
  * apply at the open position at XING EVENTS, as well as
  *
  * the opportunity to send an application.
- *
- *
- *
- *
  *
  * XING EVENTS is a XING AG subsidiary that currently employs over 75 people and
  * offers professional event organizers an award-winning software for online
@@ -33,8 +30,6 @@ import org.springframework.mail.javamail.JavaMailSender;
  *
  * @see http://www.xing-events.com
  *
- *
- *
  */
 public class SoftwareEngineerAd implements Advertisment {
 
@@ -45,10 +40,8 @@ public class SoftwareEngineerAd implements Advertisment {
     @Autowired
     private JavaMailSender mailSender;
 
-    public SoftwareEngineer(Engineer engineer) {
-
+    public SoftwareEngineerAd(Engineer engineer) {
         this.engineer = engineer;
-
     }
 
     /**
@@ -61,70 +54,49 @@ public class SoftwareEngineerAd implements Advertisment {
     public boolean fitsJobDescription() {
 
         if (!engineer.isSpeaking(Locale.ENGLISH, Language.SKILL_LEVEL_BUSINESS)) {
-
             return false;
-
         }
 
         if (!engineer.hasJavaSkills(Engineer.SKILL_LEVEL_EXPERT)) {
-
             return false;
-
         }
 
         if (!engineer.preferes(Engineer.PREFERENCES_WEB_DEVELOPMENT, Engineer.PREFERENCES_WORK_IN_TEAM)) {
-
             return false;
-
         }
 
         if (!engineer.writesTestCases()) {
-
             return false;
-
         }
 
-                               //bonus requirements.
+        //bonus requirements.
         int bonusSkills = 0;
 
         if (engineer.hasFrameWorkSkills(Framework.HIBERNATE, Engineer.SKILL_LEVEL_GOOD)) {
-
             bonusSkills++;
-
         }
 
         if (engineer.hasFrameWorkSkills(Framework.SPRING, Engineer.SKILL_LEVEL_GOOD)) {
-
             bonusSkills++;
-
         }
 
         if (engineer.hasFrameWorkSkills(Framework.APACHE_WICKET, Engineer.SKILL_LEVEL_BASIC)) {
-
             bonusSkills++;
-
         }
 
         if (engineer.isOpenSourceContributor()) {
-
             bonusSkills++;
-
         }
 
         if (engineer.isSpeaking(Locale.GERMAN, Language.SKILL_LEVEL_BUSINESS)) {
-
             bonusSkills++;
-
         }
 
         if (bonusSkills < MINIMUM_BONUS_SKILLS) {
-
             return false;
-
         }
 
         return true;
-
     }
 
     /**
@@ -136,25 +108,24 @@ public class SoftwareEngineerAd implements Advertisment {
      *
      */
     @Override
-
     public void apply() {
-
         if (!fitsJobDescription()) {
-
             throw new HRRuntimeException("Engineer doesn't fit the job description: " + engineer.toString());
-
         }
 
         MimeMessage email = mailSender.createMimeMessage();
 
         MimeMessageHelper messageHelper = new MimeMessageHelper(email, "UTF-8");
 
-        messageHelper.setTo("jobs@xing-events.com");
+        try {
+            messageHelper.setTo("jobs@xing-events.com");
 
-        messageHelper.setFrom(engineer.getEmailAddress());
+            messageHelper.setFrom(engineer.getEmailAddress());
 
-        messageHelper.setSubject("Application as " + getClass().getName());
-
+            messageHelper.setSubject("Application as " + getClass().getName());
+        } catch (MessagingException ex) {
+            throw new HRRuntimeException(ex);
+        }
         StringBuffer emailTextBuffer = new StringBuffer(1024);
 
         emailTextBuffer.append(engineer.getGreetingText()).append(engineer.getCoverLetterText()).append(engineer.getSalarayExpectationText());
@@ -165,14 +136,19 @@ public class SoftwareEngineerAd implements Advertisment {
 
         }
 
-        messageHelper.setText(emailTextBuffer.toString());
+        try {
+            messageHelper.setText(emailTextBuffer.toString());
+        } catch (MessagingException ex) {
+            throw new HRRuntimeException(ex);
+        }
 
-        messageHelper.addAttachment("CV.pdf", engineer.getCVAsDataSource());
-
-        messageHelper.addAttachment("References.pdf", engineer.getWorkReferencesAsDataSource());
+        try {
+            messageHelper.addAttachment("CV.pdf", engineer.getCVAsDataSource());
+            messageHelper.addAttachment("References.pdf", engineer.getWorkReferencesAsDataSource());
+        } catch (MessagingException ex) {
+            throw new HRRuntimeException(ex);
+        }
 
         mailSender.send(email);
-
     }
-
 }

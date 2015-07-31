@@ -4,7 +4,9 @@ package com.xing.events.hr.position.software.engineer;
  *
  * @author Alexander Yastrebov
  */
-public enum Language {
+public enum Framework {
 
-    SKILL_LEVEL_BUSINESS;
+    HIBERNATE,
+    SPRING,
+    APACHE_WICKET;
 }
