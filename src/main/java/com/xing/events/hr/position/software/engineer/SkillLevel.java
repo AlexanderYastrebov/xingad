@@ -6,6 +6,7 @@ package com.xing.events.hr.position.software.engineer;
  */
 public enum SkillLevel {
 
+    NO_SKILL,
     BASIC,
     GOOD,
     BUSINESS,

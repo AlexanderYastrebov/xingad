@@ -1,6 +1,8 @@
 package com.xing.events.hr.position.software.engineer;
 
 import java.util.Locale;
+import java.util.Optional;
+import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,7 +146,11 @@ public class SoftwareEngineerAd implements Advertisment {
 
         try {
             messageHelper.addAttachment("CV.pdf", engineer.getCVAsDataSource());
-            messageHelper.addAttachment("References.pdf", engineer.getWorkReferencesAsDataSource());
+
+            Optional<DataSource> workReferences = engineer.getWorkReferences();
+            if (workReferences.isPresent()) {
+                messageHelper.addAttachment("References.pdf", workReferences.get());
+            }
         } catch (MessagingException ex) {
             throw new HRRuntimeException(ex);
         }
