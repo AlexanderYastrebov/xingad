@@ -4,7 +4,8 @@ package com.xing.events.hr.position.software.engineer;
  *
  * @author Alexander Yastrebov
  */
-public enum Language {
+public enum Preferences {
 
-    SKILL_LEVEL_BUSINESS;
+    WEB_DEVELOPMENT,
+    WORK_IN_TEAM;
 }

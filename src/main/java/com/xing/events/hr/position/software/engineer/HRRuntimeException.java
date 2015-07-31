@@ -10,7 +10,7 @@ public class HRRuntimeException extends RuntimeException {
         super(message);
     }
 
-    HRRuntimeException(Throwable cause) {
+    public HRRuntimeException(Throwable cause) {
         super(cause);
     }
 }

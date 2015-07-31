@@ -53,15 +53,15 @@ public class SoftwareEngineerAd implements Advertisment {
     @Override
     public boolean fitsJobDescription() {
 
-        if (!engineer.isSpeaking(Locale.ENGLISH, Language.SKILL_LEVEL_BUSINESS)) {
+        if (!engineer.isSpeaking(Locale.ENGLISH, SkillLevel.BUSINESS)) {
             return false;
         }
 
-        if (!engineer.hasJavaSkills(Engineer.SKILL_LEVEL_EXPERT)) {
+        if (!engineer.hasJavaSkills(SkillLevel.EXPERT)) {
             return false;
         }
 
-        if (!engineer.preferes(Engineer.PREFERENCES_WEB_DEVELOPMENT, Engineer.PREFERENCES_WORK_IN_TEAM)) {
+        if (!engineer.preferesAll(Preferences.WEB_DEVELOPMENT, Preferences.WORK_IN_TEAM)) {
             return false;
         }
 
@@ -72,15 +72,15 @@ public class SoftwareEngineerAd implements Advertisment {
         //bonus requirements.
         int bonusSkills = 0;
 
-        if (engineer.hasFrameWorkSkills(Framework.HIBERNATE, Engineer.SKILL_LEVEL_GOOD)) {
+        if (engineer.hasFrameWorkSkills(Framework.HIBERNATE, SkillLevel.GOOD)) {
             bonusSkills++;
         }
 
-        if (engineer.hasFrameWorkSkills(Framework.SPRING, Engineer.SKILL_LEVEL_GOOD)) {
+        if (engineer.hasFrameWorkSkills(Framework.SPRING, SkillLevel.GOOD)) {
             bonusSkills++;
         }
 
-        if (engineer.hasFrameWorkSkills(Framework.APACHE_WICKET, Engineer.SKILL_LEVEL_BASIC)) {
+        if (engineer.hasFrameWorkSkills(Framework.APACHE_WICKET, SkillLevel.BASIC)) {
             bonusSkills++;
         }
 
@@ -88,7 +88,7 @@ public class SoftwareEngineerAd implements Advertisment {
             bonusSkills++;
         }
 
-        if (engineer.isSpeaking(Locale.GERMAN, Language.SKILL_LEVEL_BUSINESS)) {
+        if (engineer.isSpeaking(Locale.GERMAN, SkillLevel.BUSINESS)) {
             bonusSkills++;
         }
 

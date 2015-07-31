@@ -10,22 +10,15 @@ import javax.mail.internet.InternetAddress;
  */
 public class Engineer {
 
-    public static final int SKILL_LEVEL_BASIC = 1;
-    public static final int SKILL_LEVEL_GOOD = 2;
-    public static final int SKILL_LEVEL_EXPERT = 3;
-    //
-    public static final int PREFERENCES_WEB_DEVELOPMENT = 1;
-    public static final int PREFERENCES_WORK_IN_TEAM = 2;
-
-    public boolean isSpeaking(Locale ENGLISH, Language language) {
+    public boolean isSpeaking(Locale ENGLISH, SkillLevel level) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean hasJavaSkills(int level) {
+    public boolean hasJavaSkills(SkillLevel level) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean preferes(int PREFERENCES_WEB_DEVELOPMENT, int PREFERENCES_WORK_IN_TEAM) {
+    public boolean preferesAll(Preferences... preferences) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -33,7 +26,7 @@ public class Engineer {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean hasFrameWorkSkills(Framework f, int level) {
+    public boolean hasFrameWorkSkills(Framework f, SkillLevel level) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
